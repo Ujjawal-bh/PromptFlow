@@ -18,6 +18,7 @@ Example (with `psql` as superuser):
 CREATE DATABASE promptmanger;
 ```
 
+
 ### 2. Environment
 
 ```bash
