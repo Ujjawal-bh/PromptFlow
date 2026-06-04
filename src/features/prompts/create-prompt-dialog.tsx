@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 import { SubmitButton } from "@/components/forms/submit-button";
 import { cn } from "@/lib/utils";
@@ -39,7 +40,10 @@ export function CreatePromptDialog({
 }: CreatePromptDialogProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [state, formAction, isPending] = useActionState(createPromptAction, undefined as ActionResult | undefined);
+  const [state, formAction, isPending] = useActionState(
+    createPromptAction,
+    undefined as ActionResult<{ id: string }> | undefined,
+  );
 
   const lockedProjectId = projectId;
   const showPicker = !lockedProjectId && projects.length > 0;
@@ -92,7 +96,7 @@ export function CreatePromptDialog({
                   </option>
                 ))}
               </select>
-              {state?.fieldErrors?.projectId?.map((m) => (
+              {getFieldErrorMessages(state, "projectId")?.map((m) => (
                 <p key={m} className="text-sm text-destructive">
                   {m}
                 </p>
@@ -109,7 +113,7 @@ export function CreatePromptDialog({
               <div className="space-y-2">
                 <Label htmlFor="prompt-title">Title</Label>
                 <Input id="prompt-title" name="title" required disabled={isPending} placeholder="Meeting summary" />
-                {state?.fieldErrors?.title?.map((m) => (
+                {getFieldErrorMessages(state, "title")?.map((m) => (
                   <p key={m} className="text-sm text-destructive">
                     {m}
                   </p>
@@ -123,7 +127,7 @@ export function CreatePromptDialog({
                   disabled={isPending}
                   placeholder="One line context"
                 />
-                {state?.fieldErrors?.description?.map((m) => (
+                {getFieldErrorMessages(state, "description")?.map((m) => (
                   <p key={m} className="text-sm text-destructive">
                     {m}
                   </p>
@@ -139,7 +143,7 @@ export function CreatePromptDialog({
                   rows={10}
                   placeholder="Write the full prompt text…"
                 />
-                {state?.fieldErrors?.content?.map((m) => (
+                {getFieldErrorMessages(state, "content")?.map((m) => (
                   <p key={m} className="text-sm text-destructive">
                     {m}
                   </p>
@@ -154,7 +158,7 @@ export function CreatePromptDialog({
                   rows={3}
                   placeholder="sales, email, spanish"
                 />
-                {state?.fieldErrors?.tags?.map((m) => (
+                {getFieldErrorMessages(state, "tags")?.map((m) => (
                   <p key={m} className="text-sm text-destructive">
                     {m}
                   </p>

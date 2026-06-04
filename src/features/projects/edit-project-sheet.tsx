@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 
 export function EditProjectSheet({ project }: { project: Project }) {
@@ -49,7 +50,7 @@ export function EditProjectSheet({ project }: { project: Project }) {
               disabled={pending}
               defaultValue={project.name}
             />
-            {state?.fieldErrors?.name?.map((m) => (
+            {getFieldErrorMessages(state, "name")?.map((m) => (
               <p key={m} className="text-sm text-destructive">
                 {m}
               </p>
@@ -64,7 +65,7 @@ export function EditProjectSheet({ project }: { project: Project }) {
               rows={6}
               defaultValue={project.description ?? ""}
             />
-            {state?.fieldErrors?.description?.map((m) => (
+            {getFieldErrorMessages(state, "description")?.map((m) => (
               <p key={m} className="text-sm text-destructive">
                 {m}
               </p>

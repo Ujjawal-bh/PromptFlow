@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { updatePasswordAction } from "@/actions/settings-actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 import { SubmitButton } from "@/components/forms/submit-button";
 
@@ -34,7 +35,7 @@ export function PasswordSettingsForm() {
           required
           disabled={isPending}
         />
-        {state?.fieldErrors?.currentPassword?.map((m) => (
+        {getFieldErrorMessages(state, "currentPassword")?.map((m) => (
           <p key={m} className="text-sm text-destructive">
             {m}
           </p>
@@ -51,7 +52,7 @@ export function PasswordSettingsForm() {
           disabled={isPending}
           minLength={8}
         />
-        {state?.fieldErrors?.newPassword?.map((m) => (
+        {getFieldErrorMessages(state, "newPassword")?.map((m) => (
           <p key={m} className="text-sm text-destructive">
             {m}
           </p>
@@ -67,7 +68,7 @@ export function PasswordSettingsForm() {
           required
           disabled={isPending}
         />
-        {state?.fieldErrors?.confirmNewPassword?.map((m) => (
+        {getFieldErrorMessages(state, "confirmNewPassword")?.map((m) => (
           <p key={m} className="text-sm text-destructive">
             {m}
           </p>

@@ -6,6 +6,7 @@ import { registerAction } from "@/actions/auth-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 
 export function RegisterForm() {
@@ -22,7 +23,7 @@ export function RegisterForm() {
       <div className="space-y-2">
         <Label htmlFor="name">Full name</Label>
         <Input id="name" name="name" autoComplete="name" required disabled={isPending} placeholder="Ada Lovelace" />
-        {state?.fieldErrors?.name?.map((msg) => (
+        {getFieldErrorMessages(state, "name")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>
@@ -39,7 +40,7 @@ export function RegisterForm() {
           disabled={isPending}
           placeholder="you@company.com"
         />
-        {state?.fieldErrors?.email?.map((msg) => (
+        {getFieldErrorMessages(state, "email")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>
@@ -57,7 +58,7 @@ export function RegisterForm() {
           minLength={8}
         />
         <p className="text-xs text-muted-foreground">At least 8 characters.</p>
-        {state?.fieldErrors?.password?.map((msg) => (
+        {getFieldErrorMessages(state, "password")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>
@@ -73,7 +74,7 @@ export function RegisterForm() {
           required
           disabled={isPending}
         />
-        {state?.fieldErrors?.confirmPassword?.map((msg) => (
+        {getFieldErrorMessages(state, "confirmPassword")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>

@@ -13,7 +13,7 @@ import {
 import type { ActionResult } from "@/types/actions";
 
 export async function createPromptAction(
-  _prev: ActionResult | undefined,
+  _prev: ActionResult<{ id: string }> | undefined,
   formData: FormData,
 ): Promise<ActionResult<{ id: string }>> {
   const user = await requireUser();
@@ -168,7 +168,7 @@ export async function deletePromptAction(
 }
 
 export async function togglePromptFavoriteAction(
-  _prev: ActionResult | undefined,
+  _prev: ActionResult<{ favorite: boolean }> | undefined,
   formData: FormData,
 ): Promise<ActionResult<{ favorite: boolean }>> {
   const user = await requireUser();

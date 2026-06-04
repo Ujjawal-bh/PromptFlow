@@ -17,12 +17,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 
 export function CreateProjectDialog({ label = "New project" }: { label?: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [state, formAction, pending] = useActionState(createProjectAction, undefined as ActionResult | undefined);
+  const [state, formAction, pending] = useActionState(
+    createProjectAction,
+    undefined as ActionResult<{ id: string }> | undefined,
+  );
 
   useEffect(() => {
     if (!state) return;
@@ -49,7 +53,7 @@ export function CreateProjectDialog({ label = "New project" }: { label?: string 
           <div className="space-y-2">
             <Label htmlFor="project-name">Name</Label>
             <Input id="project-name" name="name" required disabled={pending} placeholder="Product launch" />
-            {state?.fieldErrors?.name?.map((m) => (
+            {getFieldErrorMessages(state, "name")?.map((m) => (
               <p key={m} className="text-sm text-destructive">
                 {m}
               </p>
@@ -64,7 +68,7 @@ export function CreateProjectDialog({ label = "New project" }: { label?: string 
               placeholder="What is this project about?"
               rows={4}
             />
-            {state?.fieldErrors?.description?.map((m) => (
+            {getFieldErrorMessages(state, "description")?.map((m) => (
               <p key={m} className="text-sm text-destructive">
                 {m}
               </p>

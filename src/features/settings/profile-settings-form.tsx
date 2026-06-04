@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { updateProfileAction } from "@/actions/settings-actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 import { SubmitButton } from "@/components/forms/submit-button";
 
@@ -28,7 +29,7 @@ export function ProfileSettingsForm({ defaultName }: { defaultName: string }) {
       <div className="space-y-2">
         <Label htmlFor="settings-name">Display name</Label>
         <Input id="settings-name" name="name" required disabled={isPending} defaultValue={defaultName} />
-        {state?.fieldErrors?.name?.map((m) => (
+        {getFieldErrorMessages(state, "name")?.map((m) => (
           <p key={m} className="text-sm text-destructive">
             {m}
           </p>

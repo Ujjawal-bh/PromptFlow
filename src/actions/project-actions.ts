@@ -11,7 +11,7 @@ import {
 import type { ActionResult } from "@/types/actions";
 
 export async function createProjectAction(
-  _prev: ActionResult | undefined,
+  _prev: ActionResult<{ id: string }> | undefined,
   formData: FormData,
 ): Promise<ActionResult<{ id: string }>> {
   const user = await requireUser();

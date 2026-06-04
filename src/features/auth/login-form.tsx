@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ROUTES } from "@/constants/routes";
+import { getFieldErrorMessages } from "@/lib/action-result";
 import type { ActionResult } from "@/types/actions";
 
 export function LoginForm() {
@@ -32,7 +33,7 @@ export function LoginForm() {
           disabled={isPending}
           placeholder="you@company.com"
         />
-        {state?.fieldErrors?.email?.map((msg) => (
+        {getFieldErrorMessages(state, "email")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>
@@ -53,7 +54,7 @@ export function LoginForm() {
           required
           disabled={isPending}
         />
-        {state?.fieldErrors?.password?.map((msg) => (
+        {getFieldErrorMessages(state, "password")?.map((msg) => (
           <p key={msg} className="text-sm text-destructive">
             {msg}
           </p>

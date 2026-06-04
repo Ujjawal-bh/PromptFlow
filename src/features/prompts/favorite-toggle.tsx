@@ -19,7 +19,10 @@ export function FavoriteToggle({
   className?: string;
 }) {
   const router = useRouter();
-  const [state, formAction] = useActionState(togglePromptFavoriteAction, undefined as ActionResult | undefined);
+  const [state, formAction] = useActionState(
+    togglePromptFavoriteAction,
+    undefined as ActionResult<{ favorite: boolean }> | undefined,
+  );
 
   useEffect(() => {
     if (!state) return;
