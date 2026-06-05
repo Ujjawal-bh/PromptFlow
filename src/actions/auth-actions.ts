@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
 import { hash } from "bcryptjs";
 import { signIn, signOut } from "@/auth";
@@ -31,23 +30,19 @@ export async function loginAction(
   }
 
   try {
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       email: parsed.data.email,
       password: parsed.data.password,
-      redirect: false,
+      redirectTo: "/dashboard",
     });
-
-    if (result?.error) {
-      return { ok: false, message: "Invalid email or password." };
-    }
   } catch (error) {
-    if (error instanceof AuthError && error.type === "CredentialsSignin") {
+    if (error instanceof AuthError) {
       return { ok: false, message: "Invalid email or password." };
     }
     throw error;
   }
 
-  redirect("/dashboard");
+  return { ok: true };
 }
 
 export async function registerAction(
@@ -91,21 +86,13 @@ export async function registerAction(
   });
 
   try {
-    const result = await signIn("credentials", {
+    await signIn("credentials", {
       email: parsed.data.email,
       password: parsed.data.password,
-      redirect: false,
+      redirectTo: "/dashboard",
     });
-
-    if (result?.error) {
-      revalidatePath("/login");
-      return {
-        ok: false,
-        message: "Account created but sign-in failed. Try logging in.",
-      };
-    }
   } catch (error) {
-    if (error instanceof AuthError && error.type === "CredentialsSignin") {
+    if (error instanceof AuthError) {
       revalidatePath("/login");
       return {
         ok: false,
@@ -115,5 +102,5 @@ export async function registerAction(
     throw error;
   }
 
-  redirect("/dashboard");
+  return { ok: true };
 }
