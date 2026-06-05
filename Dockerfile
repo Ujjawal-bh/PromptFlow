@@ -15,7 +15,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV AUTH_SECRET="build-time-placeholder"
 ENV NEXTAUTH_SECRET="build-time-placeholder"
 ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dummy?schema=public"
-RUN npx prisma generate && npm run build
+RUN npx prisma generate && npx prisma migrate deploy && npm run build
 
 FROM node:20-alpine AS runner
 WORKDIR /app
