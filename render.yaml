@@ -6,6 +6,7 @@ services:
     plan: free
     buildCommand: npm ci && npm run render-build
     startCommand: npm run render-start
+    # Do NOT set a Release Command that runs prisma/npx — migrations run in render-build.
     envVars:
       - key: NODE_ENV
         value: production

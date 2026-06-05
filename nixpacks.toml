@@ -1,0 +1,11 @@
+# Render uses Nixpacks by default for Node apps.
+# These commands override dashboard settings that may call `npx prisma` (installs Prisma 7).
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run render-build"]
+
+[start]
+cmd = "npm run render-start"

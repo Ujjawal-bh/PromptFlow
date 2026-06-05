@@ -26,6 +26,7 @@ RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
+COPY bin ./bin
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/public ./public
@@ -37,4 +38,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "npm run db:migrate:deploy && node server.js"]
+CMD ["sh", "-c", "node bin/prisma-cli.js migrate deploy && node server.js"]
