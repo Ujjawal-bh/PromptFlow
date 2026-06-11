@@ -42,6 +42,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy startup script
+COPY --chown=nextjs:nodejs bin/start.sh ./bin/start.sh
+
 USER nextjs
 
 EXPOSE 3000
@@ -49,4 +52,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "-c", "node bin/prisma-cli.js migrate deploy && node server.js"]
+CMD ["sh", "bin/start.sh"]
