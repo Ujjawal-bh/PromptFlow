@@ -34,7 +34,6 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 COPY package.json package-lock.json ./
 COPY prisma ./prisma
-COPY bin ./bin
 
 RUN npm ci --omit=dev
 
@@ -42,8 +41,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy startup script
-COPY --chown=nextjs:nodejs bin/start.sh ./bin/start.sh
+# Copy bin ONCE, with correct ownership, after npm ci
+COPY --chown=nextjs:nodejs bin ./bin
+RUN chmod +x bin/start.sh
 
 USER nextjs
 
