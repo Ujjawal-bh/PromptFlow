@@ -5,6 +5,7 @@ WORKDIR /app
 RUN apk add --no-cache libc6-compat openssl
 
 COPY package.json package-lock.json ./
+COPY bin ./bin
 RUN npm ci
 
 FROM node:22-alpine AS builder
@@ -33,6 +34,7 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
 COPY package.json package-lock.json ./
+COPY bin ./bin
 COPY prisma ./prisma
 
 RUN npm ci --omit=dev
@@ -41,15 +43,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy bin ONCE, with correct ownership, after npm ci
-COPY --chown=nextjs:nodejs bin ./bin
-RUN chmod +x bin/start.sh
+RUN chown -R nextjs:nodejs /app/bin
 
 USER nextjs
 
 EXPOSE 3000
-
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-CMD ["sh", "bin/start.sh"]
+CMD ["sh", "-c", "echo '[start] DB='$DATABASE_URL && node bin/prisma-cli.js migrate deploy && echo '[start] Migration done' && exec node server.js"]
